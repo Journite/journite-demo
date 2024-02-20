@@ -76,14 +76,14 @@ export default function GoalForm({ isOpen, onOpenChange }: Props) {
                   <Button
                     fullWidth
                     variant="light"
-                    className="h-8 flex items-center fw-400 justify-between px-2 mt-2 cursor-pointer"
+                    className="fw-400 mt-2 flex h-8 cursor-pointer items-center justify-between px-2"
                   >
                     Set end date
                     <i className="bi bi-calendar-week"></i>
                   </Button>
                   <DatePicker
                     value={endDate}
-                    setDate={(date) => setValue("endDate", date)}
+                    setValue={(date) => setValue("endDate", date)}
                   />
                 </form>
               </ModalBody>

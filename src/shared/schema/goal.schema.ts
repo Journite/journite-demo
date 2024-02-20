@@ -12,6 +12,6 @@ export const iconThumbSchema = yup.object({
 
 export const goalSchema = yup.object({
   name: yup.string().required(errorMessages.required),
-  endDate: yup.number().required(errorMessages.required),
+  endDate: yup.number(),
   iconThumb: iconThumbSchema,
 });

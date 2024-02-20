@@ -8,6 +8,6 @@ export interface IconThumb {
 export interface Goal {
   id?: string;
   name: string;
-  endDate: number;
+  endDate?: number;
   iconThumb: IconThumb;
 }

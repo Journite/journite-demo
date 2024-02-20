@@ -1,6 +1,7 @@
 import { Divider } from "@nextui-org/react";
 import { format } from "date-fns";
 import React from "react";
+import DatePicker from "../../shared/components/date-picker/DatePicker";
 
 interface Goal {
   name: string;
@@ -20,7 +21,9 @@ export default function GoalDetails({ color, name, iconName, endDate }: Goal) {
             <i className={`bi bi-${iconName}`}></i>
           </div>
           <div className="flex flex-col justify-between">
-            <h3 className="leading-none text-large font-semibold mb-1">{name}</h3>
+            <h3 className="leading-none text-large font-semibold mb-1">
+              {name}
+            </h3>
             {endDate && (
               <span className={`text-default-400 text-xs leading-none`}>
                 {"End date: " + format(endDate, "dd/MM/yyy")}
