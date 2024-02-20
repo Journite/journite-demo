@@ -7,19 +7,22 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  useDisclosure,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { goalSchema } from "../../../shared/schema/goal.schema";
 import { modalMotionProps } from "../../../shared/utils/style.utils";
 import GoalIconSelector from "./GoalIconSelector";
 import DatePicker from "../../../shared/components/date-picker/DatePicker";
+import { useState } from "react";
+import { format } from "date-fns";
 
 interface Props {
   isOpen: boolean;
   onOpenChange: () => void;
 }
 
-export default function GoalForm({ isOpen, onOpenChange }: Props) {
+export default function GoalForm(props: Props) {
   const {
     setValue,
     watch,
@@ -37,6 +40,7 @@ export default function GoalForm({ isOpen, onOpenChange }: Props) {
   });
 
   const [iconThumb, endDate] = watch(["iconThumb", "endDate"]);
+  const { isOpen, onOpenChange, onClose } = useDisclosure({ id: "datePicker" });
 
   const onSubmitSuccess = (data: Object) => {
     console.log(data);
@@ -46,11 +50,16 @@ export default function GoalForm({ isOpen, onOpenChange }: Props) {
     console.error(errors);
   };
 
+  const onSetEndDate = () => {
+    if (!endDate) setValue("endDate", new Date().getTime());
+    onOpenChange();
+  };
+
   return (
     <>
       <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={props.isOpen}
+        onOpenChange={props.onOpenChange}
         motionProps={modalMotionProps}
         className="!z-30"
       >
@@ -76,15 +85,23 @@ export default function GoalForm({ isOpen, onOpenChange }: Props) {
                   <Button
                     fullWidth
                     variant="light"
-                    className="fw-400 mt-2 flex h-8 cursor-pointer items-center justify-between px-2"
+                    className="fw-400 mt-2 flex h-8 cursor-pointer items-center justify-between px-2 font-medium"
+                    onClick={onSetEndDate}
                   >
-                    Set end date
-                    <i className="bi bi-calendar-week"></i>
+                      Set end date
+                    <div className="flex gap-1 font-normal">
+                      {endDate && format(endDate, "dd/MM/yyyy")}
+                      <i className="bi bi-calendar-week"></i>
+                    </div>
                   </Button>
-                  <DatePicker
-                    value={endDate}
-                    setValue={(date) => setValue("endDate", date)}
-                  />
+                  {endDate && (
+                    <DatePicker
+                      isOpen={isOpen}
+                      onClose={onOpenChange}
+                      value={endDate}
+                      setValue={(date) => setValue("endDate", date)}
+                    />
+                  )}
                 </form>
               </ModalBody>
               <ModalFooter>

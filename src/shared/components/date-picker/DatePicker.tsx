@@ -1,6 +1,7 @@
 import {
   Button,
   Divider,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -8,7 +9,6 @@ import {
 import {
   add,
   addMonths,
-  differenceInMonths,
   eachDayOfInterval,
   eachMonthOfInterval,
   endOfMonth,
@@ -64,16 +64,18 @@ const getAllDayInMonth = (month: Date) => {
 type PickType = "day" | "month" | "year";
 
 export default function DatePicker({
+  isOpen,
   value,
   setValue,
+  onClose,
 }: {
-  value?: number;
-  setValue: (nextDate: number) => void;
+  isOpen: boolean;
+  value: number;
+  setValue: (nextDate: number | undefined) => void;
+  onClose: () => void;
 }) {
   const [pickType, setPickType] = useState<PickType>("day");
-  const [monthInView, setMonthInView] = useState<Date>(
-    value ? new Date(value) : new Date(),
-  );
+  const [monthInView, setMonthInView] = useState<Date>(new Date());
 
   const renderPicker = () => {
     switch (pickType) {
@@ -101,21 +103,72 @@ export default function DatePicker({
     }
   };
 
+  useEffect(() => {
+    if (isOpen) setMonthInView(new Date(value));
+  }, [isOpen]);
+
   return (
     <>
       <Modal
-        size="xs"
-        isOpen={true}
+        isOpen={isOpen}
         motionProps={modalMotionProps}
         classNames={{
           wrapper: "z-[1000]",
-          base: "w-80 h-[312px]",
+          base: "w-auto h-auto",
           backdrop: "z-[999]",
         }}
         hideCloseButton
       >
         <ModalContent>
-          <ModalBody className="gap-0 px-3 pb-6">{renderPicker()}</ModalBody>
+          <ModalBody className="gap-0 px-4 py-4">
+            <div className="mb-2 flex items-center gap-2">
+              <Button
+                variant="light"
+                disableAnimation
+                className="fw-400 h-fit min-w-0 px-2 text-primary/70 hover:!bg-transparent hover:text-primary hover:underline"
+                onClick={() => {
+                  setValue(undefined);
+                  onClose();
+                }}
+              >
+                Unset
+              </Button>
+              <Input
+                value={value ? format(value, "dd/MM/yyyy") : ""}
+                classNames={{
+                  label: "w-0",
+                  mainWrapper: "grow",
+                  base: "grow w-32",
+                  inputWrapper:
+                    "data-[hover=true]:bg-default-100 !cursor-default",
+                  input: "!cursor-default text-center mr-6",
+                }}
+                labelPlacement="outside-left"
+                readOnly
+                size="sm"
+                startContent={<i className="bi bi-calendar-week"></i>}
+              />
+              <Button
+                size="sm"
+                color="primary"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.25 }}
+              key={pickType}
+            >
+              {renderPicker()}
+            </motion.div>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
@@ -136,40 +189,49 @@ function MonthPicker({
   setMonthInView: React.Dispatch<React.SetStateAction<Date>>;
 }) {
   const monthList = eachMonthOfInterval({
-    start: startOfYear(new Date()),
-    end: endOfYear(new Date()),
+    start: startOfYear(monthInView),
+    end: endOfYear(monthInView),
   });
 
   return (
     <>
+      <Divider className="my-2 h-[0.5px]" />
       <Button
+        size="sm"
         variant="light"
         color="primary"
-        className="grow text-medium font-semibold"
+        fullWidth
+        className="text-medium font-semibold"
         onClick={() => setPickType("year")}
         startContent={<i className="bi bi-calendar-week"></i>}
       >
-        {2024}
+        {format(monthInView, "yyyy")}
       </Button>
       <Divider className="my-2 h-[0.5px]" />
       <div className="grid grid-cols-3 gap-2">
-        {monthList.map((month) => (
-          <Button
-            key={month.getTime()}
-            variant="light"
-            className={
-              value && getMonth(value) === getMonth(month) ? "" : "fw-400"
-            }
-          >
-            {format(month, "MMMM")}
-          </Button>
-        ))}
+        {monthList.map((month) => {
+          const isSelected = value && getMonth(value) === getMonth(month);
+          return (
+            <Button
+              key={month.getTime()}
+              variant={isSelected ? "solid" : "light"}
+              className={isSelected ? "" : "fw-400"}
+              onClick={() => {
+                setMonthInView(month);
+                setPickType("day");
+              }}
+            >
+              {format(month, "MMMM")}
+            </Button>
+          );
+        })}
       </div>
       <Divider className="my-2 h-[0.5px]" />
 
       <Button
         color="danger"
         variant="light"
+        size="sm"
         fullWidth
         onClick={() => setPickType("day")}
         className="fw-400"
@@ -210,15 +272,8 @@ function DayPicker({
   }, [value]);
 
   return (
-    <div className="h-80 w-[296px]">
+    <div className="w-[296px]">
       <div className="flex items-center justify-center px-2 pb-2">
-        <Button
-          variant="light"
-          disableAnimation
-          className="fw-400 absolute left-4 h-fit min-w-0 p-1 text-primary/70 hover:!bg-transparent hover:text-primary hover:underline"
-        >
-          Unset
-        </Button>
         <Button
           variant="light"
           color="primary"
@@ -273,7 +328,7 @@ function DayPicker({
             className="absolute grid w-[296px] grid-cols-7 text-center text-sm"
           >
             {days.map((date) => (
-              <div key={date.toString()} className="p-0.5">
+              <div key={date.toString()} className="p-1">
                 <button
                   type="button"
                   className={classNames(
@@ -287,16 +342,14 @@ function DayPicker({
                       !isEqual(date, new Date(value)) &&
                       !isToday(date) &&
                       "hover:bg-gray-100",
-                    "aspect-square h-full rounded-full p-1.5",
+                    "flex aspect-square h-full w-full items-center justify-center rounded-full leading-none",
                   )}
                   onClick={(e) => {
                     e.stopPropagation();
                     setValue(date.getTime());
                   }}
                 >
-                  <time dateTime={format(date, "yyyy-MM-dd")}>
-                    {format(date, "d")}
-                  </time>
+                  {format(date, "d")}
                 </button>
               </div>
             ))}

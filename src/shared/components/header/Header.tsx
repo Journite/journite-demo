@@ -6,13 +6,13 @@ import Logo from "../common/Logo";
 export default function Header({ ThemeToggle }: { ThemeToggle: ReactNode }) {
   return (
     <>
-      <div className="border-b flex items-center h-16">
-        <div className="px-4 w-full flex justify-between items-center">
-          <div className="flex gap-2 items-center">
-            <div className="bg-black h-10 w-10 rounded-lg flex justify-center items-center text-lg border-[1.5px] border-white text-content1-foreground">
+      <div className="flex h-16 items-center border-b">
+        <div className="flex w-full items-center justify-between px-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg border-[1.5px] border-white bg-black text-lg text-content1-foreground">
               <Logo width={16} />
             </div>
-            <span className="text-foreground font-semibold text-lg">
+            <span className="text-lg font-semibold text-foreground">
               Planny
             </span>
           </div>
@@ -51,7 +51,7 @@ export default function Header({ ThemeToggle }: { ThemeToggle: ReactNode }) {
             />
           </Tabs>
 
-          <div className="flex gap-6 items-center">
+          <div className="flex items-center gap-6">
             {ThemeToggle}
             <User
               classNames={{ name: "font-semibold" }}
