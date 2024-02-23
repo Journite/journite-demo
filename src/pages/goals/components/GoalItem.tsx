@@ -3,12 +3,14 @@ interface Props {
   color: string;
   iconName: string;
   isSelected?: boolean;
+  onSelect: () => void;
 }
 
 interface Style {
   wrapperStyle: string;
   iconStyle: string;
   textStyle: string;
+  subTextStyle: string;
 }
 
 export default function GoalItem({
@@ -16,42 +18,45 @@ export default function GoalItem({
   color,
   iconName,
   isSelected = false,
+  onSelect,
 }: Props) {
   const renderColors = (): Style => {
     if (isSelected) {
       return {
         wrapperStyle: `bg-${color}-500`,
         iconStyle: `text-${color}-500 bg-background`,
-        textStyle: "text-background font-semibold",
+        textStyle: "text-background",
+        subTextStyle: "text-background",
       };
     } else
       return {
-        wrapperStyle: `hover:bg-${color}-300/20`,
+        wrapperStyle: `hover:bg-${color}-400/10`,
         iconStyle: `text-white bg-${color}-500`,
         textStyle: `text-${color}-500`,
+        subTextStyle: "text-default-400",
       };
   };
 
   return (
     <div
-      className={`flex items-center gap-2 h-10 rounded-medium p-1 cursor-pointer mt-1 first:mt-0 ${
+      onClick={onSelect}
+      className={`mt-1.5 flex cursor-pointer items-center gap-2 rounded-e-medium p-1 pl-4 transition-colors duration-400 transition-background first:mt-0 ${
         renderColors().wrapperStyle
       }`}
     >
       <div
-        className={`w-8 h-8 rounded-md flex justify-center items-center ${
+        className={`flex h-9 w-9 items-center justify-center rounded-small ${
           renderColors().iconStyle
         }`}
       >
         <i className={`bi bi-${iconName}`}></i>
       </div>
-      <span
-        className={`w-[calc(100%-3rem)] text-small leading-none truncate ${
-          renderColors().textStyle
-        }`}
-      >
-        {name}
-      </span>
+      <div className="w-[calc(100%-3rem)]">
+        <div className={`truncate text-sm ${renderColors().textStyle}`}>
+          {name}
+        </div>
+        <div className={`text-xs ${renderColors().subTextStyle}`}>0 done</div>
+      </div>
     </div>
   );
 }

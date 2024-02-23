@@ -8,7 +8,7 @@ const colorSafeList = colorList.reduce((prev, colorName) => {
   shades.map((shade) => {
     prev.push(`text-${colorName}-${shade}`);
     prev.push(`bg-${colorName}-${shade}`);
-    prev.push(`hover:bg-${colorName}-300/20`);
+    prev.push(`hover:bg-${colorName}-400/10`);
   });
   return prev;
 }, []);

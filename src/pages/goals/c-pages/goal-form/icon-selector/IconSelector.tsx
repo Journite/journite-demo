@@ -9,9 +9,9 @@ import {
   Color,
   colorList,
   iconList,
-} from "../../../shared/utils/constant.utils";
+} from "../../../../../shared/utils/constant.utils";
 import { UseFormSetValue } from "react-hook-form";
-import { Goal } from "../../../shared/model/goal.model";
+import { Goal } from "../../../../../shared/model/goal.model";
 
 interface GoalIconSelectorProps {
   color: string;
@@ -37,19 +37,19 @@ export default function GoalIconSelector({
   return (
     <Popover
       placement="right-start"
-      offset={10}
+      offset={18}
       className="rounded-medium"
       backdrop="opaque"
-      classNames={{backdrop: "bg-transparent"}}
+      classNames={{ backdrop: "bg-transparent" }}
     >
-      <PopoverTrigger className=" aria-expanded:translate-y-1.5 aria-expanded:scale-125 aria-expanded:opacity-100">
+      <PopoverTrigger className="aria-expanded:origin-bottom-left aria-expanded:translate-y-1.5 aria-expanded:scale-125 aria-expanded:opacity-100 aria-expanded:first:shadow-medium">
         <div
           className={`bg-${color}-500 flex h-12 w-12 cursor-pointer items-center justify-center rounded-medium text-2xl text-background transition-all duration-75`}
         >
           <i className={`bi bi-${iconName}`}></i>
         </div>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className="-translate-y-1.5">
         <div className="w-[21.625rem] px-1 py-2">
           <div>
             <div className="mb-2 text-small font-bold">Icon</div>

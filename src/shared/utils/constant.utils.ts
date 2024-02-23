@@ -28,13 +28,13 @@ export type Color =
   | "fuchsia";
 
 export const iconList = [
-  "airplane-fill",
+  "airplane-engines-fill",
   "alphabet-uppercase",
   "moon-stars-fill",
   "person-arms-up",
   "journal-bookmark-fill",
   "music-note-beamed",
-  "cup-fill",
+  "car-front-fill",
   "hearts",
   "house-heart",
   "calendar-check",
@@ -43,4 +43,10 @@ export const iconList = [
   "mortarboard-fill",
   "trophy-fill",
   "code-slash",
+  "coin",
+  "alarm",
+  "rocket-takeoff",
+  "piggy-bank-fill",
+  "fire",
+  "emoji-sunglasses",
 ];

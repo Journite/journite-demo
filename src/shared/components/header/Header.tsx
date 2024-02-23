@@ -1,9 +1,20 @@
 import { Tab, Tabs, User } from "@nextui-org/react";
-import { ReactNode } from "react";
-import { BsBookmarkCheck, BsCalendarDate, BsCrosshair } from "react-icons/bs";
-import Logo from "../common/Logo";
+import { ReactNode, useMemo } from "react";
+import {
+  BsBookmarkCheck,
+  BsCalendarDate,
+  BsCrosshair,
+  BsPersonWorkspace,
+} from "react-icons/bs";
+import Logo from "../Logo";
+import { useLocation } from "react-router-dom";
 
 export default function Header({ ThemeToggle }: { ThemeToggle: ReactNode }) {
+  const location = useLocation();
+  const selectedTab = useMemo(() => {
+    return location.pathname.split("/")[1];
+  }, [location]);
+
   return (
     <>
       <div className="flex h-16 items-center border-b">
@@ -17,35 +28,49 @@ export default function Header({ ThemeToggle }: { ThemeToggle: ReactNode }) {
             </span>
           </div>
           <Tabs
-            aria-label="Options"
+            aria-label="Navigation"
             color="primary"
             size="lg"
             variant="underlined"
+            selectedKey={selectedTab}
           >
             <Tab
-              key="photos"
+              key="goals"
+              href="/#/goals"
               title={
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-center space-x-2">
                   <BsCrosshair />
                   <span>Goals</span>
                 </div>
               }
             />
             <Tab
-              key="music"
+              key="planner"
+              href="/#/planner"
               title={
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-center space-x-2">
                   <BsCalendarDate />
                   <span>Planner</span>
                 </div>
               }
             />
             <Tab
-              key="videos"
+              key="habits"
+              href="/#/habits"
               title={
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-center space-x-2">
                   <BsBookmarkCheck />
                   <span>Habits</span>
+                </div>
+              }
+            />
+            <Tab
+              key="workspace"
+              href="/#/workspace"
+              title={
+                <div className="flex items-center justify-center space-x-2">
+                  <BsPersonWorkspace />
+                  <span>Workspace</span>
                 </div>
               }
             />

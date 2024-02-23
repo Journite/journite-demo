@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer utilities {
+  .none-scrollbar::-webkit-scrollbar {
+    width: 0;
+  }
   ::-webkit-scrollbar {
     height: 100vh;
     width: 10px;
