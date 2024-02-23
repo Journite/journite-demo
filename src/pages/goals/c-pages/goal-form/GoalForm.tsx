@@ -42,7 +42,6 @@ export default function GoalForm(props: IModalProps) {
 
   const {
     setValue,
-    getValues,
     watch,
     formState: { errors },
     register,

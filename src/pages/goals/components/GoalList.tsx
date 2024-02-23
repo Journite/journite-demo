@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import GoalItem from "./GoalItem";
-import { Button, Divider, Spinner } from "@nextui-org/react";
+import { Button, Divider } from "@nextui-org/react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   getListOfGoals,
   setIsEdit,
   setSelectedGoal,
 } from "../../../store/modules/goals/goalSlice";
-import { Goal } from "../../../shared/model/goal.model";
+import GoalItem from "./GoalItem";
 
 export default function GoalList({ openForm }: { openForm: () => void }) {
   const dispatch = useAppDispatch();
