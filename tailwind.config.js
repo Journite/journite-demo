@@ -1,4 +1,5 @@
 import { nextui } from "@nextui-org/react";
+import { blue } from "tailwindcss/colors";
 import { colorList } from "./src/shared/utils/constant.utils";
 
 /** @type {import('tailwindcss').Config} */
@@ -8,6 +9,7 @@ const colorSafeList = colorList.reduce((prev, colorName) => {
   shades.map((shade) => {
     prev.push(`text-${colorName}-${shade}`);
     prev.push(`bg-${colorName}-${shade}`);
+    prev.push(`outline-${colorName}-${shade}`);
     prev.push(`hover:bg-${colorName}-400/10`);
   });
   return prev;
@@ -35,13 +37,20 @@ export default {
           200: "#FFBB80",
           300: "#FF983D",
           400: "#FF7700",
-          500: "#BE5900",
-          600: "#994700",
+          500: "#BC6D38",
+          600: "#BC6D38",
           700: "#703400",
           800: "#4D2400",
           900: "#241100",
           950: "#140A00",
         },
+        // red: { 500: "#CF5966" },
+        yellow: { 500: "#e7c208" },
+        // green: { 500: "#22915F" },
+        purple: { 500: "#a368d9" },
+        orange: { 500: "#f47e2a" },
+        // cyan: { 500: "#99f7ff" },
+        // blue: { 500: "#118ab2" },
       },
     },
   },
@@ -49,7 +58,6 @@ export default {
   plugins: [
     require("@tailwindcss/typography"),
     nextui({
-      addCommonColors: true,
       layout: {
         radius: {
           small: 4, // rounded-small
@@ -67,6 +75,8 @@ export default {
               foreground: "#fff",
               DEFAULT: "#000",
             },
+            secondary: { blue, DEFAULT: blue[500] },
+            focus: "#000000",
           },
         },
         dark: {

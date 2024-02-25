@@ -1,16 +1,14 @@
 export const colorList = [
-  "blue",
-  "purple",
-  "green",
-  "cyan",
   "pink",
-  "red",
+  "purple",
+  "blue",
+  "cyan",
+  "green",
   "yellow",
-  "zinc",
   "orange",
+  "red",
   "brown",
-  "emerald",
-  "fuchsia",
+  "zinc",
 ];
 
 export type Color =
@@ -23,9 +21,7 @@ export type Color =
   | "yellow"
   | "zinc"
   | "orange"
-  | "brown"
-  | "emerald"
-  | "fuchsia";
+  | "brown";
 
 export const iconList = [
   "airplane-engines-fill",

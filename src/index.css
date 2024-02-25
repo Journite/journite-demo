@@ -47,4 +47,13 @@
   [data-slot="input-wrapper"].h-12 label {
     margin-bottom: 4px;
   }
+
+  .shadow-thumbnail {
+    box-shadow:
+      rgba(255, 255, 255, 0.4) 8px 8px,
+      rgba(255, 255, 255, 0.3) 16px 16px,
+      rgba(255, 255, 255, 0.2) 24px 24px,
+      rgba(255, 255, 255, 0.1) 32px 32px,
+      rgba(255, 255, 255, 0.05) 40px 40px;
+  }
 }

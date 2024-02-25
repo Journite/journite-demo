@@ -14,14 +14,14 @@ import { UseFormSetValue } from "react-hook-form";
 import { Goal } from "../../../../../shared/model/goal.model";
 
 interface GoalIconSelectorProps {
-  color: string;
-  iconName: string;
+  selectedColor: string;
+  selectedIcon: string;
   setValue: UseFormSetValue<Goal>;
 }
 
 export default function GoalIconSelector({
-  color,
-  iconName,
+  selectedColor,
+  selectedIcon,
   setValue,
 }: GoalIconSelectorProps) {
   const onSelectColor = (e: MouseEvent<HTMLDivElement>, color: Color) => {
@@ -42,22 +42,22 @@ export default function GoalIconSelector({
       backdrop="opaque"
       classNames={{ backdrop: "bg-transparent" }}
     >
-      <PopoverTrigger className="aria-expanded:origin-bottom-left aria-expanded:translate-y-1.5 aria-expanded:scale-125 aria-expanded:opacity-100 aria-expanded:first:shadow-medium">
+      <PopoverTrigger className="aria-expanded:origin-bottom-left aria-expanded:translate-y-1.5 aria-expanded:scale-125 aria-expanded:opacity-100 aria-expanded:first:shadow-large">
         <div
-          className={`bg-${color}-500 flex h-12 w-12 cursor-pointer items-center justify-center rounded-medium text-2xl text-background transition-all duration-75`}
+          className={`bg-${selectedColor}-500 flex h-12 w-12 cursor-pointer items-center justify-center rounded-medium text-2xl text-background transition-all duration-75`}
         >
-          <i className={`bi bi-${iconName}`}></i>
+          <i className={`bi bi-${selectedIcon}`}></i>
         </div>
       </PopoverTrigger>
       <PopoverContent className="-translate-y-1.5">
-        <div className="w-[21.625rem] px-1 py-2">
+        <div className="w-[21.125rem] px-1 py-2">
           <div>
             <div className="mb-2 text-small font-bold">Icon</div>
-            <div className="flex flex-wrap gap-4 text-default-500 ">
+            <div className="flex flex-wrap gap-2 text-default-500 ">
               {iconList.map((iconName) => (
                 <div
                   key={iconName}
-                  className="cursor-pointer text-3xl transition-colors hover:text-default-900"
+                  className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-md p-1 text-2xl transition-colors hover:text-default-600 ${iconName === selectedIcon ? `border-2 bg-default-100 text-black` : ""}`}
                   onClick={(e) => onSelectIcon(e, iconName)}
                 >
                   <i className={`bi bi-${iconName}`}></i>
@@ -68,11 +68,11 @@ export default function GoalIconSelector({
           <Divider className="my-2" />
           <div>
             <div className="mb-2 text-small font-bold">Color</div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap justify-around">
               {colorList.map((color) => (
                 <div
                   key={color}
-                  className={`bg-${color}-500 h-6 w-6 cursor-pointer rounded-full hover:shadow-medium`}
+                  className={`bg-${color}-500 h-6 w-6 cursor-pointer rounded-full border border-white ${color === selectedColor ? `outline outline-2 outline-${color}-600` : ""}`}
                   onClick={(e) => onSelectColor(e, color as Color)}
                 ></div>
               ))}

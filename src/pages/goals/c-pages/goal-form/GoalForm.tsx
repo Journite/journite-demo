@@ -95,10 +95,15 @@ export default function GoalForm(props: IModalProps) {
             </ModalHeader>
             <ModalBody>
               <div className="flex gap-2">
-                <GoalIconSelector {...iconThumb} setValue={setValue} />
+                <GoalIconSelector
+                  selectedColor={iconThumb.color}
+                  selectedIcon={iconThumb.iconName}
+                  setValue={setValue}
+                />
                 <div className="grow">
                   <Input
                     variant="faded"
+                    color={!!errors.name ? "danger" : "default"}
                     size="sm"
                     radius="md"
                     label="Your goal"

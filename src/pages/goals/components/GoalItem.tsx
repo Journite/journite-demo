@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface Props {
   name: string;
   color: string;
@@ -20,6 +22,8 @@ export default function GoalItem({
   isSelected = false,
   onSelect,
 }: Props) {
+  const [hover, setHover] = useState(false);
+
   const renderColors = (): Style => {
     if (isSelected) {
       return {
@@ -39,11 +43,17 @@ export default function GoalItem({
 
   return (
     <div
+      draggable
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       onClick={onSelect}
-      className={`mt-1.5 flex cursor-pointer items-center gap-2 rounded-e-medium p-1 pl-4 transition-colors duration-400 transition-background first:mt-0 ${
+      className={`mt-1.5 flex cursor-pointer items-center rounded-e-medium p-1 pl-0 transition-colors duration-400 transition-background first:mt-0 ${
         renderColors().wrapperStyle
       }`}
     >
+      <i
+        className={`bi bi-grip-vertical cursor-move text-xl ${hover ? renderColors().textStyle : "text-transparent"}`}
+      ></i>
       <div
         className={`flex h-9 w-9 items-center justify-center rounded-small ${
           renderColors().iconStyle
@@ -51,7 +61,7 @@ export default function GoalItem({
       >
         <i className={`bi bi-${iconName}`}></i>
       </div>
-      <div className="w-[calc(100%-3rem)]">
+      <div className="ml-2 w-[calc(100%-3rem)]">
         <div className={`truncate text-sm ${renderColors().textStyle}`}>
           {name}
         </div>

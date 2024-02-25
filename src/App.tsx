@@ -1,44 +1,37 @@
-import { Button, NextUIProvider } from "@nextui-org/react";
-import { useState } from "react";
-import { BsMoonFill, BsSunFill } from "react-icons/bs";
-import "./App.css";
-import Header from "./shared/components/header/Header";
-import AppRoutes from "./pages/routes";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
+import { useEffect, useState } from "react";
+import { BrowserRouter, useNavigate } from "react-router-dom";
+import "./App.css";
+import MainRoutes from "./routes";
 import LoadingOverlay from "./shared/components/loading-overlay/LoadingOverlay";
-import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "./store";
+import { getCredential } from "./store/modules/authSlice";
+import { NextUIProvider } from "@nextui-org/react";
 
 function App() {
+  const dispatch = useAppDispatch();
+
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  useEffect(() => {
+    dispatch(getCredential());
+  }, []);
+
   const navigate = useNavigate();
+
   return (
-    <NextUIProvider navigate={navigate}>
-      <div
-        className={
-          (isDarkTheme ? "dark" : "") +
-          " h-screen bg-background text-foreground"
-        }
-      >
-        <Header
-          ThemeToggle={
-            <Button
-              variant={"light"}
-              onClick={() => setIsDarkTheme((prev) => !prev)}
-              isIconOnly
-              radius="full"
-              size="sm"
-              className="text-lg"
-            >
-              {isDarkTheme ? <BsMoonFill /> : <BsSunFill />}
-            </Button>
+    <>
+      <NextUIProvider navigate={navigate}>
+        <div
+          className={
+            (isDarkTheme ? "dark" : "") +
+            " h-screen bg-background text-foreground"
           }
-        />
-        <main className="h-[calc(100vh-64px)]">
-          <AppRoutes />
-        </main>
-        <LoadingOverlay />
-      </div>
-    </NextUIProvider>
+        ></div>
+      </NextUIProvider>
+      <MainRoutes />
+      <LoadingOverlay />
+    </>
   );
 }
 
