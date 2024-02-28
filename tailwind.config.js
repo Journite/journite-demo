@@ -3,7 +3,7 @@ import { blue } from "tailwindcss/colors";
 import { colorList } from "./src/shared/utils/constant.utils";
 
 /** @type {import('tailwindcss').Config} */
-
+const safeClasses = ["pr-1.5", "pl-1.5"];
 const colorSafeList = colorList.reduce((prev, colorName) => {
   const shades = [500, 600];
   shades.map((shade) => {
@@ -16,7 +16,7 @@ const colorSafeList = colorList.reduce((prev, colorName) => {
 }, []);
 
 export default {
-  safelist: colorSafeList,
+  safelist: [...colorSafeList, ...safeClasses],
   content: [
     "./index.html",
     "./src/**/*.{tsx, ts, jsx, js}",

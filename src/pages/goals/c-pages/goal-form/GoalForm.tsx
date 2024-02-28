@@ -21,7 +21,7 @@ import {
   createGoal,
   setIsEdit,
   updateGoal,
-} from "../../../../store/modules/goals/goalSlice";
+} from "../../../../store/modules/goalSlice";
 import GoalIconSelector from "./icon-selector/IconSelector";
 import { IModalProps } from "../type";
 

@@ -4,6 +4,7 @@ import GoalForm from "./c-pages/goal-form/GoalForm";
 import GoalList from "./components/GoalList";
 import { useAppSelector } from "../../store";
 import { useEffect } from "react";
+import ResizableCol from "../../shared/components/ResizableCol";
 
 export default function GoalsPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -19,9 +20,14 @@ export default function GoalsPage() {
   return (
     <>
       <div className="flex h-full">
-        <div className="w-64 border-r-3 border-double">
+        <ResizableCol
+          defaultWidth={252}
+          minWidth={180}
+          maxWidth={"40%"}
+          side="left"
+        >
           <GoalList openForm={onOpen} />
-        </div>
+        </ResizableCol>
         <div className="grow">
           <GoalDetails onEdit={onOpenChange} />
         </div>

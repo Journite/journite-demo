@@ -1,3 +1,7 @@
+html {
+  overflow: hidden;
+}
+
 .loader {
   animation: rotate 3s reverse infinite ease-in-out;
 }

@@ -5,9 +5,12 @@ import {
   isPending,
 } from "@reduxjs/toolkit";
 import { child, get, push, ref, remove, set, update } from "firebase/database";
-import { db } from "../../../config/firebase";
-import { Goal } from "../../../shared/model/goal.model";
-import { objectToArray } from "../../../shared/utils/fn.utils";
+import { db } from "../../config/firebase";
+import { Goal } from "../../shared/model/goal.model";
+import { objectToArray } from "../../shared/utils/fn.utils";
+import { getAuth } from "firebase/auth";
+import { getStore } from "..";
+import { getUid } from "../../shared/utils/auth.utils";
 
 const initialState: {
   goalList: Goal[];
@@ -24,17 +27,19 @@ const initialState: {
   updating: false,
 };
 
-const refBase = "goals/";
+const refBase = "/goals";
 
 export const getListOfGoals = createAsyncThunk("goals/fetch_all", async () => {
+  const uid = getUid();
   const goalsRef = ref(db);
-  return await get(child(goalsRef, refBase));
+  return await get(child(goalsRef, uid + refBase));
 });
 
 export const createGoal = createAsyncThunk(
   "goals/create_new",
   async (goal: Goal) => {
-    const goalRef = push(child(ref(db), "goals"));
+    const uid = getUid();
+    const goalRef = push(child(ref(db), uid + refBase));
     return await set(goalRef, goal);
   },
 );
@@ -42,7 +47,8 @@ export const createGoal = createAsyncThunk(
 export const updateGoal = createAsyncThunk(
   "goals/update",
   async (goal: Goal) => {
-    const goalRef = ref(db, "goals/" + goal.id);
+    const uid = getUid();
+    const goalRef = ref(db, uid + refBase + "/" + goal.id);
     delete goal.id;
     return await update(goalRef, goal);
   },
@@ -51,7 +57,8 @@ export const updateGoal = createAsyncThunk(
 export const deleteGoal = createAsyncThunk(
   "goals/delete",
   async (id: string) => {
-    const goalRef = ref(db, "goals/" + id);
+    const uid = getUid();
+    const goalRef = ref(db, uid + refBase + "/" + id);
     return await remove(goalRef);
   },
 );
@@ -78,6 +85,7 @@ export const GoalSlice = createSlice({
         state.loading = false;
         const data = action.payload.val();
         if (data) state.goalList = objectToArray(data) as Goal[];
+        else state.goalList = [];
       })
       //   .addCase(getDebbyId.fulfilled, (state, action) => {
       //     state.loading = false;

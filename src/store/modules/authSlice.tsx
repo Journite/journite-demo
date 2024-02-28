@@ -1,15 +1,26 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  isPending,
+  isRejected,
+} from "@reduxjs/toolkit";
 import {
   UserCredential,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
+  Auth,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  setPersistence,
+  User,
 } from "firebase/auth";
 import { AppThunk } from "..";
 
 const initialState: {
   errorMessage: string;
-  account: null | UserCredential;
+  account: null | User;
   loading: boolean;
   loginSuccess: boolean;
   loginFailure: boolean;
@@ -37,15 +48,23 @@ export const login = createAsyncThunk(
   async ({
     email,
     password,
+    rememberMe,
   }: {
-    // rememberMe: boolean;
+    rememberMe: boolean;
     email: string;
     password: string;
   }) => {
-    const result = await signInWithEmailAndPassword(auth, email, password);
-    return result;
+    await setPersistence(
+      auth,
+      rememberMe ? browserLocalPersistence : browserSessionPersistence,
+    );
+    return await signInWithEmailAndPassword(auth, email, password);
   },
 );
+
+export const logout = createAsyncThunk("auth/log_out", async () => {
+  return await signOut(auth);
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -61,22 +80,27 @@ const authSlice = createSlice({
     completedFetchCredential(state, action) {
       state.loading = false;
       state.account = action.payload;
+      state.credentialHasBeenFetched = true;
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(login.pending, (state) => {
+      .addCase(login.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loginSuccess = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.loading = false;
+        state.loginSuccess = false;
+        state.account = null;
+      })
+      .addMatcher(isPending(login, logout), (state) => {
         state.loading = true;
       })
-      .addCase(login.rejected, (state, action) => ({
+      .addMatcher(isRejected(login, logout), (_, action) => ({
         ...initialState,
         loginFailure: true,
         errorMessage: action.error.message ?? "",
-      }))
-      .addCase(login.fulfilled, (state, action) => ({
-        ...initialState,
-        loading: false,
-        loginSuccess: true,
       }));
   },
 });
