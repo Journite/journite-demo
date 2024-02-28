@@ -1,8 +1,8 @@
 import React from "react";
-import { RouteProps, useLocation, Navigate, Link } from "react-router-dom";
+import { Navigate, PathRouteProps, useLocation } from "react-router-dom";
 import { useAppSelector } from "../store";
 
-interface IOwnProps extends RouteProps {
+interface IOwnProps extends PathRouteProps {
   hasAnyAuthorities?: string[];
   children: React.ReactNode;
 }
