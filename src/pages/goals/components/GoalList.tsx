@@ -5,7 +5,7 @@ import {
   getListOfGoals,
   setIsEdit,
   setSelectedGoal,
-} from "../../../store/modules/goals/goalSlice";
+} from "../../../store/modules/goalSlice";
 import GoalItem from "./GoalItem";
 
 export default function GoalList({ openForm }: { openForm: () => void }) {

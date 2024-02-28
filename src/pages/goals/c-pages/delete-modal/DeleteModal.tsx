@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import { modalMotionProps } from "../../../../shared/utils/style.utils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { IModalProps } from "../type";
-import { deleteGoal } from "../../../../store/modules/goals/goalSlice";
+import { deleteGoal } from "../../../../store/modules/goalSlice";
 
 export default function DeleteModal(props: IModalProps) {
   const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export default function DeleteModal(props: IModalProps) {
             <>
               <ModalHeader>{"Confirm delete"}</ModalHeader>
               <ModalBody>
-                <div className="">
+                <div className="text-small">
                   Delete{" "}
                   <span
                     className={`font-medium text-${selectedGoal?.iconThumb.color}-500`}

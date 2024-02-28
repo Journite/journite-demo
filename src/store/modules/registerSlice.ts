@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice, isPending } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from "firebase/auth";
 
 const initialState: {
   loading: boolean;
@@ -29,12 +33,11 @@ export const signUp = createAsyncThunk(
       auth,
       email,
       password,
-    ).then((userCredential) => {
-      // Signed up
+    ).then(async (userCredential) => {
       const user = userCredential.user;
-      console.log(user);
-
-      // ...
+      await updateProfile(user, {
+        displayName: name,
+      });
     });
     return result;
   },

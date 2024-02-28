@@ -1,4 +1,4 @@
-import { Button, Divider, Input, Link } from "@nextui-org/react";
+import { Button, Checkbox, Divider, Input, Link } from "@nextui-org/react";
 import Logo from "../../Logo";
 import { IProps } from "./type";
 import { useForm } from "react-hook-form";
@@ -7,18 +7,24 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import * as yup from "yup";
 import { errorMessages } from "../../../utils/validation.utils";
 import { login, reset } from "../../../../store/modules/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Login({ setSignUp }: IProps) {
   const dispatch = useAppDispatch();
 
-  const { errorMessage, loading, loginFailure, loginSuccess } = useAppSelector(
+  const { errorMessage, loginFailure, loginSuccess } = useAppSelector(
     (state) => state.auth,
   );
+
+  const navigate = useNavigate();
 
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(
       yup.object({
@@ -26,21 +32,36 @@ export default function Login({ setSignUp }: IProps) {
           .string()
           .required(errorMessages.required)
           .email(errorMessages.matches),
-        password: yup
-          .string()
-          .required(errorMessages.required)
-          .matches(
-            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g,
-            errorMessages.matches,
-          ),
+        password: yup.string().required(errorMessages.required),
+        rememberMe: yup.boolean().required(errorMessages.required),
       }),
     ),
+    defaultValues: { rememberMe: false },
   });
 
-  const onSubmitSuccess = (data: { email: string; password: string }) => {
+  const checked = watch("rememberMe");
+
+  useEffect(() => {
+    console.log(checked);
+  }, [checked]);
+
+  const onSubmitSuccess = (data: {
+    email: string;
+    password: string;
+    rememberMe: boolean;
+  }) => {
     dispatch(reset());
     dispatch(login(data));
   };
+
+  const onError = () => {
+    console.log(errors);
+  };
+
+  useEffect(() => {
+    if (loginSuccess) navigate("/goals");
+  }, [loginSuccess]);
+
   return (
     <>
       <span className="mb-2 font-light text-zinc-600">
@@ -48,7 +69,7 @@ export default function Login({ setSignUp }: IProps) {
       </span>
       <Logo height={40} />
       <form
-        onSubmit={handleSubmit(onSubmitSuccess)}
+        onSubmit={handleSubmit(onSubmitSuccess, onError)}
         className="mt-8 flex min-w-72 flex-col gap-4"
       >
         <div
@@ -75,6 +96,10 @@ export default function Login({ setSignUp }: IProps) {
               <i className="bi bi-envelope-at-fill text-default-400"></i>
             </>
           }
+          color={errors.email ? "danger" : undefined}
+          isInvalid={!!errors.email}
+          errorMessage={errors.email?.message}
+          {...register("email")}
         />
         <Input
           radius="sm"
@@ -87,12 +112,24 @@ export default function Login({ setSignUp }: IProps) {
               <i className="bi bi-shield-lock-fill text-default-400"></i>
             </>
           }
+          color={errors.password ? "danger" : undefined}
+          isInvalid={!!errors.password}
+          errorMessage={errors.password?.message}
+          {...register("password")}
         />
+        <Checkbox
+          size="sm"
+          className="py-0"
+          {...register("rememberMe")}
+          onChange={(e) => setValue("rememberMe", e.target.checked)}
+        >
+          Remember me
+        </Checkbox>
         <Button
           type="submit"
           color="primary"
           radius="sm"
-          className="mt-2 shadow-small"
+          className="mt-4 shadow-small"
         >
           Login
         </Button>

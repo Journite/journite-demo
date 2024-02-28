@@ -2,7 +2,7 @@ import { Button, Divider, useDisclosure } from "@nextui-org/react";
 import { format } from "date-fns";
 import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { setIsEdit } from "../../../store/modules/goals/goalSlice";
+import { setIsEdit } from "../../../store/modules/goalSlice";
 import DeleteModal from "../c-pages/delete-modal/DeleteModal";
 
 interface IProps {
@@ -34,13 +34,13 @@ export default function GoalDetails({ onEdit }: IProps) {
   const renderNoItemSelected = () => {
     return (
       <>
-        <div className="flex gap-2 h-full flex-col items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center gap-2">
           <div className="flex h-40 w-40 items-center justify-center rounded-full bg-default-100 text-7xl text-default-300">
             <i className="bi bi-crosshair"></i>
           </div>
-          <div className="text-center mb-4">
+          <div className="mb-4 text-center">
             <div className="text-lg font-semibold">No goal selected</div>
-            <div className="text-default-400 text-small">
+            <div className="text-small text-default-400">
               Select a goal in goal list to see details.
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function GoalDetails({ onEdit }: IProps) {
                     isIconOnly
                     variant="light"
                     size="sm"
-                    className="text-md text-default-500"
+                    className="text-medium text-default-500"
                     onClick={handleOnEdit}
                   >
                     <i className="bi bi-pencil-square"></i>
@@ -92,7 +92,7 @@ export default function GoalDetails({ onEdit }: IProps) {
                     isIconOnly
                     variant="light"
                     size="sm"
-                    className="text-md text-default-500"
+                    className="text-medium text-default-500"
                     onClick={onOpen}
                   >
                     <i className="bi bi-trash3-fill"></i>

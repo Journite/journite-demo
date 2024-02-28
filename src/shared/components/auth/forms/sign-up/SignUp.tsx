@@ -145,7 +145,7 @@ export default function SignUp({ setSignUp }: IProps) {
                   stroke="none"
                   strokeWidth="1"
                   fill="none"
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                 >
                   <g
                     id="Color-"

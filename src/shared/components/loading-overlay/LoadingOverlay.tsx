@@ -15,8 +15,12 @@ export default function LoadingOverlay() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
+    let timeOut: NodeJS.Timeout;
     if (isShow) setShow(true);
-    else setTimeout(() => setShow(false), 800);
+    else timeOut = setTimeout(() => setShow(false), 1000);
+    return () => {
+      if (!isShow) window.clearTimeout(timeOut);
+    };
   }, [isShow]);
 
   return (
@@ -31,12 +35,7 @@ export default function LoadingOverlay() {
               }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className={
-                "fixed bottom-0 left-0 right-0 top-0 z-[1000000000] flex items-center justify-center " +
-                (!credentialHasBeenFetched
-                  ? "bg-foreground"
-                  : "bg-foreground/50 backdrop-blur-sm")
-              }
+              className="fixed bottom-0 left-0 right-0 top-0 z-[1000000000] flex items-center justify-center bg-foreground/50 backdrop-blur-sm"
             >
               <div className="loader relative flex h-[224px] w-[224px] bg-white"></div>
               <div className="logo absolute">

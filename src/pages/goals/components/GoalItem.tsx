@@ -61,7 +61,7 @@ export default function GoalItem({
       >
         <i className={`bi bi-${iconName}`}></i>
       </div>
-      <div className="ml-2 w-[calc(100%-3rem)]">
+      <div className="ml-2 w-[calc(100%-4rem)]">
         <div className={`truncate text-sm ${renderColors().textStyle}`}>
           {name}
         </div>

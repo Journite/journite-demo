@@ -1,6 +1,6 @@
 import { AnyAction, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import goalSlice from "./modules/goals/goalSlice";
+import goalSlice from "./modules/goalSlice";
 import registerSlice from "./modules/registerSlice";
 import authSlice from "./modules/authSlice";
 
@@ -16,6 +16,7 @@ const store = configureStore({
     }).concat(),
 });
 
+export const getStore = () => store;
 export type IRootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
